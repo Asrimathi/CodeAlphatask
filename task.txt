@@ -1,0 +1,46 @@
+import spacy
+import random
+
+# Load spaCy model
+nlp = spacy.load('en_core_web_sm')
+
+# Define a dictionary for responses
+responses = {
+    'greeting': ['Hi! How are you doing today?'],
+    'name': ['I am a chatbot created by CodeAlpha.'],
+    'help': ['Of course! What do you need assistance with?'],
+    'projects': ['Great! Which domain interests you?'],
+    'iot_ml': ['For IoT, you could work on projects like a smart home automation system or an environmental monitoring system. For ML, consider a project like a sentiment analysis tool or a predictive maintenance system. Both domains offer exciting opportunities for innovation!'],
+    'thank_you': ['You’re welcome! If you have any more questions, feel free to ask.'],
+    'default': ['Sorry, I didn’t understand that. Could you please rephrase?']
+}
+
+def get_response(user_input):
+    doc = nlp(user_input.lower())
+    if any(token.text in ['hi', 'hello'] for token in doc):
+        return random.choice(responses['greeting'])
+    elif 'name' in user_input.lower():
+        return random.choice(responses['name'])
+    elif 'help' in user_input.lower():
+        return random.choice(responses['help'])
+    elif 'project' in user_input.lower():
+        return random.choice(responses['projects'])
+    elif 'iot' in user_input.lower() or 'ml' in user_input.lower():
+        return random.choice(responses['iot_ml'])
+    elif 'thank you' in user_input.lower() or 'thanks' in user_input.lower():
+        return random.choice(responses['thank_you'])
+    else:
+        return random.choice(responses['default'])
+
+def start_chat():
+    print("Hello! I am a chatbot.")
+    while True:
+        user_input = input("You: ")
+        if user_input.lower() == 'quit':
+            print("Chatbot: Bye!")
+            break
+        response = get_response(user_input)
+        print(f"Chatbot: {response}")
+
+if __name__ == "__main__":
+    start_chat()
